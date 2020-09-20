@@ -141,10 +141,12 @@
   <ItemGroup>
     <ClCompile Include="Kalman.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Tracker.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\help\measurement_package.h" />
     <ClInclude Include="kalman.h" />
+    <ClInclude Include="measurement.h" />
+    <ClInclude Include="Tracker.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\data.txt" />

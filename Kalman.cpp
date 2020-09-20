@@ -15,7 +15,7 @@ KalmanFilter::~KalmanFilter() {
 void KalmanFilter::Predict() {
 
 	//Predict the new state 
-	this->x_ = this->x_ * this->F_;
+	this->x_ = this->F_* this->x_;
 
 	//Predict the new covariance:
 	this->P_ = this->F_ * this->P_ * (this->F_).transpose() + this->Q_;

@@ -21,13 +21,19 @@
     <ClCompile Include="Kalman.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Tracker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="kalman.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\help\measurement_package.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="measurement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tracker.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
