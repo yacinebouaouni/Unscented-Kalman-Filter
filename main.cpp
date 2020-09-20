@@ -1,61 +1,40 @@
 #include<iostream>
+#include<fstream>
 #include<Eigen/Dense>
 #include"kalman.h"
+#include"measurement_package.h"
+
+
 using namespace Eigen;
 using namespace std;
-int main1() {
 
-	/*
-
-		VectorXd : X-> dynamic shape 
-				   d-> double
-
-		MatrixXd : X -> unknown shape (dynamic matric on the heap)
-				   d -> The type of variable is double 
-
-		Matrix3d : This is a fixed size matrix on the stack 
-				   - It's much faster then the heap.
-			
-
-		
-		
-	*/
-
-	VectorXd v1(3);
-	v1 << 1, 2, 3;
-	cout << "vetor 1 size " << v1.size() <<  endl;
-
-	VectorXd v2 = VectorXd::Constant(5,10);
-	cout << "v2 = " << endl << v2 << endl;
-
-
-
-
-	MatrixXd m1;
-	Matrix3d m2;
-
-	cout << "size of m2 is " << m2.size() << endl;
-
-	m2 << 1, 2, 3,
-		4, 5, 6,
-		7, 8, 9;
-
-	cout << "m2 = " << m2 << endl;
-
-	MatrixXd result,transpose;
-
-	result = m2 * v1;
-	cout << "Result = " << endl << result << endl;
-
-	transpose = m2.transpose();
-	cout << "Transpose = " << endl << transpose << endl;
-
-
-
-	return 0;
-}
 
 int main() {
 
 	
+	string file_name_in = "./data/data.txt";
+	ifstream instream;
+	instream.open(file_name_in, ios::in);
+
+	//Check if the file stream is open
+	if (!instream.is_open()) {
+		cout << "File Stream Error : Cannot open File " << file_name_in << endl;
+	}
+
+	//
+
+	//i -> number of measurements 
+	short int num_measurements=20;
+	int i = 0;
+	string raw;
+
+	while (getline(instream, raw) && (i <= num_measurements)) {
+
+		
+		stringstream raw_stream(raw);
+
+		//First string is a sensor type:
+		
+
+	}
 }

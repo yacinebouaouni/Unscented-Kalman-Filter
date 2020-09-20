@@ -29,6 +29,9 @@ void KalmanFilter::Update(const Eigen::VectorXd &z) {
 	Eigen::MatrixXd Inov_cov = this->H_ * this->P_ * (this->H_).transpose() + this->R_;
 	Eigen::MatrixXd Kalman_Gain = this->P_ * (this->H_).transpose() * (Inov_cov).inverse();
 
+	this->x_ = this->x_ + Kalman_Gain * Inov;
+	Eigen::MatrixXd I = Eigen::MatrixXd::Identity((this->x_).size(), (this->x_).size());
+	this->P_ = (I - Kalman_Gain * this->H_) * this->P_;
 
 
 
