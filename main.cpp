@@ -88,4 +88,5 @@ int main() {
 	}
 
 	delete tracker;
+	return 0;
 }

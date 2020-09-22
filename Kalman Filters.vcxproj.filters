@@ -24,6 +24,9 @@
     <ClCompile Include="Tracker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Examples\RMSE_ex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="kalman.h">
@@ -35,9 +38,13 @@
     <ClInclude Include="Tracker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RMSE.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\data.txt" />
+    <Text Include="data\RMSE.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitattributes" />

@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Examples\RMSE_ex.cpp" />
     <ClCompile Include="Kalman.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Tracker.cpp" />
@@ -146,10 +147,12 @@
   <ItemGroup>
     <ClInclude Include="kalman.h" />
     <ClInclude Include="measurement.h" />
+    <ClInclude Include="RMSE.h" />
     <ClInclude Include="Tracker.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\data.txt" />
+    <Text Include="data\RMSE.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitattributes" />
