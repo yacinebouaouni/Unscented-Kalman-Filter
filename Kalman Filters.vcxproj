@@ -143,12 +143,15 @@
     <ClCompile Include="Kalman.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Tracker.cpp" />
+    <ClCompile Include="ukf\main.cpp" />
+    <ClCompile Include="ukf\Unscented.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="kalman.h" />
     <ClInclude Include="measurement.h" />
     <ClInclude Include="RMSE.h" />
     <ClInclude Include="Tracker.h" />
+    <ClInclude Include="ukf\unscented.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\data.txt" />

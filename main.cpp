@@ -11,7 +11,7 @@ using namespace Eigen;
 using namespace std;
 
 
-int main() {
+int main3() {
 
 	
 	string file_name_in = "./data/data.txt";

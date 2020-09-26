@@ -3,7 +3,7 @@
 #include<iostream>
 #include<fstream>
 
-int main() {
+int mainx() {
 
 	std::string file_name = "./data/RMSE.txt";
 	std::fstream file_stream;

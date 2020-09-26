@@ -27,6 +27,12 @@
     <ClCompile Include="Examples\RMSE_ex.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ukf\Unscented.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ukf\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="kalman.h">
@@ -39,6 +45,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RMSE.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ukf\unscented.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
