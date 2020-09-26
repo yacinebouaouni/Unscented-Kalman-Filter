@@ -27,7 +27,7 @@ class UKF {
          * Student assignment functions
          */
         void GenerateSigmaPoints(const Eigen::VectorXd& x, const Eigen:: MatrixXd& P, Eigen::MatrixXd* Xsig_out);
-        void AugmentedSigmaPoints(Eigen::MatrixXd* Xsig_out);
+        void AugmentedSigmaPoints(const Eigen::VectorXd& x,const Eigen::MatrixXd& P, const Eigen::VectorXd& noise, const Eigen::MatrixXd& Q, Eigen::MatrixXd* Xsig_out);
         void SigmaPointPrediction(Eigen::MatrixXd* Xsig_out);
         void PredictMeanAndCovariance(Eigen::VectorXd* x_pred,
             Eigen::MatrixXd* P_pred);
