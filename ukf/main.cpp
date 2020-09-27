@@ -90,6 +90,27 @@ int main() {
 	
 	*/
 
+	VectorXd x_pred(5, 1);
+	MatrixXd P_pred(5, 5);
+	ukf.PredictMeanAndCovariance(Pred_Sig, &x_pred, &P_pred);
 
+	cout << "The mean of Sig points = \n" << x_pred << endl;
+	cout << "The covariance matrix = \n" << P_pred << endl;
+
+	/*
+		The mean of Sig points =
+		5.93446
+		1.48886
+		 2.2049
+		0.53678
+		 0.3528
+		The covariance matrix =
+		 0.00548035   -0.002499  0.00340508 -0.00357408  -0.0030908
+		  -0.002499   0.0110543  0.00151778  0.00990746  0.00806631
+		 0.00340508  0.00151778      0.0058     0.00078      0.0008
+		-0.00357408  0.00990746     0.00078    0.011924     0.01125
+		 -0.0030908  0.00806631      0.0008     0.01125      0.0127
+	*/
+	
 	return 0;
 }

@@ -159,3 +159,46 @@ void UKF::SigmaPointPrediction(const MatrixXd& SigPoints,MatrixXd* Xsig_out) {
 
 
 }
+
+
+void UKF::PredictMeanAndCovariance(const Eigen::MatrixXd& Preds_Sig, Eigen::VectorXd* x_pred, Eigen::MatrixXd* P_pred) {
+
+    /*-----------------------------------------------------------------------------------------------------------------
+                        Compute the weights : weight1->The mean Sig , Weight2 -> other sig points
+    -------------------------------------------------------------------------------------------------------------------*/
+
+    double weight1 = this->lambda / (this->lambda + this->n_a);
+    double weight2 = 1 / (2 * (this->lambda + this->n_a));
+
+
+
+    /*-----------------------------------------------------------
+                           Compute the mean 
+    ------------------------------------------------------------*/
+    VectorXd Mean = VectorXd::Zero(this->n_x);
+    Mean = weight1 * Preds_Sig.col(0);
+    
+    for (int i = 1; i <15; i++) {
+
+        Mean += weight2 * Preds_Sig.col(i);
+
+    }
+
+    /*------------------------------------------------------------
+                    Compute the Covariance Matrix
+    -------------------------------------------------------------*/
+
+    MatrixXd Cov(this->n_x, this->n_x);
+
+    Cov = weight1 * (Preds_Sig.col(0) - Mean) * (Preds_Sig.col(0) - Mean).transpose();
+    
+    for (int i = 1; i < 15; i++) {
+
+        Cov+= weight2 * (Preds_Sig.col(i) - Mean) * (Preds_Sig.col(i) - Mean).transpose();
+    }
+
+    *x_pred = Mean;
+    *P_pred = Cov;
+
+
+}
