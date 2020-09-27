@@ -94,14 +94,7 @@ void UKF::SigmaPointPrediction(const MatrixXd& SigPoints,MatrixXd* Xsig_out) {
     int size_x = 5;
     int size_aug = 7;
     MatrixXd Preds_Sig(size_x, 2 * size_aug + 1);;
-    int size_noise = size_aug - size_x;
-
-    MatrixXd Sigma_noise(size_noise, 2 * size_aug + 1);
-    MatrixXd Sigma_X(size_x, 2 * size_aug + 1);
-
-    Sigma_noise = SigPoints.bottomRows(size_noise);
-    Sigma_X = SigPoints.topRows(size_x);
-
+    
     for (int i = 0; i < 2 * size_aug + 1; i++) {
 
         /*----------------------------------------------------------------
