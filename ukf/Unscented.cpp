@@ -1,5 +1,6 @@
 #include "unscented.h"
 #include <iostream>
+#include<Cmath>
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
@@ -15,8 +16,6 @@ UKF::~UKF() {
 void UKF::Init() {
 
 }
-
-
 
 void UKF::GenerateSigmaPoints(const VectorXd& x,const MatrixXd& P,MatrixXd* Xsig_out) {
 
@@ -190,11 +189,22 @@ void UKF::PredictMeanAndCovariance(const Eigen::MatrixXd& Preds_Sig, Eigen::Vect
 
     MatrixXd Cov(this->n_x, this->n_x);
 
-    Cov = weight1 * (Preds_Sig.col(0) - Mean) * (Preds_Sig.col(0) - Mean).transpose();
+    VectorXd residual0 = Preds_Sig.col(0) - Mean;
+    //Normalize the yaw angle between -pi pi
+    while (residual0(3) > pi) residual0(3) -= 2. * pi;
+    while (residual0(3) < -pi) residual0(3) += 2. * pi;
+
+    Cov = weight1 * (residual0) * (residual0).transpose();
     
     for (int i = 1; i < 15; i++) {
 
-        Cov+= weight2 * (Preds_Sig.col(i) - Mean) * (Preds_Sig.col(i) - Mean).transpose();
+        VectorXd residual = Preds_Sig.col(i) - Mean;
+
+        //Normalize the yaw angle between -pi pi
+        while (residual(3) > pi) residual(3) -= 2. * pi;
+        while (residual(3) < -pi) residual(3) += 2. * pi;
+        
+        Cov+= weight2 * (residual) * (residual).transpose();
     }
 
     *x_pred = Mean;
