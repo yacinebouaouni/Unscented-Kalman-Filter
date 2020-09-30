@@ -4,7 +4,8 @@
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
-
+using std::cout;
+using std::endl;
 UKF::UKF() {
     Init();
 }
@@ -229,8 +230,9 @@ void UKF::PredictRadarMeasurement(const Eigen::MatrixXd& sig_pts, Eigen::VectorX
     //Create vector and covariance matrix of the measurement :
 
     VectorXd z_meas=VectorXd::Zero(this->n_z);
-    MatrixXd S(this->n_z, this->n_z);
+    MatrixXd S=MatrixXd::Zero(this->n_z, this->n_z);
 
+   
 
     /*-------------------------------------------------------------------------------------------------------
                                    Compute the mean of the measurement sigma points
@@ -252,7 +254,7 @@ void UKF::PredictRadarMeasurement(const Eigen::MatrixXd& sig_pts, Eigen::VectorX
    
 
         // Set the appropriate weights :
-        if (i = 0)weight = weight1;
+        if (i == 0)weight = weight1;
         else weight = weight2;
 
         //Compute the mean of the measurement sigma points
@@ -260,7 +262,7 @@ void UKF::PredictRadarMeasurement(const Eigen::MatrixXd& sig_pts, Eigen::VectorX
 
     }
 
-
+    cout << "mean done !" << endl;
 
     /*-------------------------------------------------------------------------------------------------------
                               Compute the covariance matrix of measurement sigma points                         
@@ -275,14 +277,14 @@ void UKF::PredictRadarMeasurement(const Eigen::MatrixXd& sig_pts, Eigen::VectorX
         while (residual(1) < -pi) residual(1) += 2. * pi;
 
         //Choose the right weight;
-        if (i = 0) weight = weight1;
+        if (i == 0) weight = weight1;
         else weight = weight2;
 
         //Compute the covariance matrix of the measurement sigma points
         S += weight * residual * residual.transpose();
     }
 
-
+    cout << "covariance matrix done !" << endl;
     /*---------------------------------------------------------------------------------------------------------
                          Add measurement noise matrix R to the measurement covariance matrix
     ----------------------------------------------------------------------------------------------------------*/

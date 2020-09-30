@@ -111,6 +111,23 @@ int main() {
 		-0.00357408  0.00990746     0.00078    0.011924     0.01125
 		 -0.0030908  0.00806631      0.0008     0.01125      0.0127
 	*/
+
+	VectorXd z_meas(3);
+	MatrixXd S(3, 3);
+	ukf.PredictRadarMeasurement(Pred_Sig, &z_meas, &S);
 	
+	cout << "The mean z = \n " << z_meas << std::endl;
+	cout << "The covairance matrix S = \n" << S << std::endl;
+
+	/*
+		The mean z =
+		6.11934
+		0.245834
+		2.10274
+		The covairance matrix S =
+		0.0946302 - 0.000145123   0.00408742
+		- 0.000145123  0.000624209 - 0.000781362
+		0.00408742 - 0.000781362    0.0180473
+	*/
 	return 0;
 }
