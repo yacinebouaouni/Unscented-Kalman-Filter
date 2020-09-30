@@ -10,7 +10,17 @@ class UKF {
 
         int n_x = 5;
         int n_a = 7;
+        int n_z = 3;//Radar measurement size 
+
         double lambda = 3 - (double)n_a;
+
+
+        /*------------------------------------------------
+            Radar measurement noise standard deviation
+         ---------------------------------------------- */
+        double std_r = 0.3;//radius in m
+        double std_phi = 0.0175;//Angle in rad
+        double std_v = 0.1;// radius velocity m/s
 
     public:
 
@@ -36,8 +46,7 @@ class UKF {
         
         void PredictMeanAndCovariance(const Eigen::MatrixXd& Preds_Sig,Eigen::VectorXd* x_pred,Eigen::MatrixXd* P_pred);
 
-        void PredictRadarMeasurement(Eigen::VectorXd* z_out,
-            Eigen::MatrixXd* S_out);
+        void PredictRadarMeasurement(const Eigen::MatrixXd& Sig_pts,Eigen::VectorXd* z_out,Eigen::MatrixXd* S_out);
         void UpdateState(Eigen::VectorXd* x_out,
             Eigen::MatrixXd* P_out);
 };

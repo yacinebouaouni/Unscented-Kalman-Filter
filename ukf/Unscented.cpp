@@ -212,3 +212,91 @@ void UKF::PredictMeanAndCovariance(const Eigen::MatrixXd& Preds_Sig, Eigen::Vect
 
 
 }
+
+
+void UKF::PredictRadarMeasurement(const Eigen::MatrixXd& sig_pts, Eigen::VectorXd* z_out, Eigen::MatrixXd* S_out) {
+
+
+    //Prepare the weights:
+
+    double weight1 = this->lambda / (this->lambda + this->n_a);
+    double weight2 = 1 / (2 * (this->lambda + this->n_a));
+
+    //Create matrix that holds sigma points in measurment space:
+
+    MatrixXd Sig_meas(this->n_z, 2 * this->n_a + 1);
+
+    //Create vector and covariance matrix of the measurement :
+
+    VectorXd z_meas=VectorXd::Zero(this->n_z);
+    MatrixXd S(this->n_z, this->n_z);
+
+
+    /*-------------------------------------------------------------------------------------------------------
+                                   Compute the mean of the measurement sigma points
+    --------------------------------------------------------------------------------------------------------*/
+    double weight;
+    for (int i = 0; i < 2 * this->n_a + 1; i++) {
+
+        double p_x = sig_pts(0,i);
+        double p_y = sig_pts(1, i);
+        double v = sig_pts(2, i);
+        double yaw = sig_pts(3, i);
+        double yaw_r = sig_pts(4, i);
+
+        Sig_meas(0, i) = sqrt(p_x * p_x + p_y * p_y);//radius
+        Sig_meas(1, i) = atan2(p_y, p_x);//angle
+        Sig_meas(2, i) = (p_x * cos(yaw)*v + p_y * sin(yaw)*v) / sqrt(p_x * p_x + p_y * p_y);   //radius_velocity
+
+
+   
+
+        // Set the appropriate weights :
+        if (i = 0)weight = weight1;
+        else weight = weight2;
+
+        //Compute the mean of the measurement sigma points
+        z_meas += weight * Sig_meas.col(i);
+
+    }
+
+
+
+    /*-------------------------------------------------------------------------------------------------------
+                              Compute the covariance matrix of measurement sigma points                         
+    -------------------------------------------------------------------------------------------------------- */
+
+    for (int i = 0; i < 2 * this->n_a + 1; i++) {
+
+        VectorXd residual = Sig_meas.col(i) - z_meas;
+
+        // Normalize the angle between [-pi pi]
+        while (residual(1) > pi) residual(1) -= 2. * pi;
+        while (residual(1) < -pi) residual(1) += 2. * pi;
+
+        //Choose the right weight;
+        if (i = 0) weight = weight1;
+        else weight = weight2;
+
+        //Compute the covariance matrix of the measurement sigma points
+        S += weight * residual * residual.transpose();
+    }
+
+
+    /*---------------------------------------------------------------------------------------------------------
+                         Add measurement noise matrix R to the measurement covariance matrix
+    ----------------------------------------------------------------------------------------------------------*/
+    
+    
+    MatrixXd R = MatrixXd(n_z, n_z);
+    R << this->std_r * this->std_r  ,            0                       ,        0                ,
+                     0              , this->std_phi* this->std_phi       ,        0                ,
+                     0              ,            0                       , this->std_v* this->std_v;
+    
+    S = S + R;
+
+
+    *S_out = S;
+    *z_out = z_meas;
+
+}
