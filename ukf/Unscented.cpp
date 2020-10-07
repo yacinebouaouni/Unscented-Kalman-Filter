@@ -322,12 +322,12 @@ void UKF::CrossCorrelationT(const Eigen::MatrixXd& sig_state, const Eigen::Vecto
         VectorXd state_residual = sig_state.col(i) - x_state;
         // angle normalization
         while (state_residual(3) > pi) state_residual(3) -= 2 * pi;
-        while (state_residual(3) < pi) state_residual(3) += 2 * pi;
+        while (state_residual(3) < -pi) state_residual(3) += 2 * pi;
 
         VectorXd meas_residual = sig_meas.col(i) - x_meas;
         // angle normalization
         while (meas_residual(1) > pi) meas_residual(1) -= 2 * pi;
-        while (meas_residual(1) < pi) meas_residual(1) += 2 * pi;
+        while (meas_residual(1) < -pi) meas_residual(1) += 2 * pi;
         
         TT += weight * state_residual * meas_residual.transpose();
 
@@ -350,7 +350,17 @@ void UKF::UpdateState(const Eigen::VectorXd& x_state, const Eigen::MatrixXd& P_s
     /*---------------------------------------------------------
                             State Update:
     ----------------------------------------------------------*/
-    *x_out = x_state + KG * (measurement - x_meas);
+    VectorXd z_residual = measurement - x_meas;
+    // angle normalization
+    
+    cout << "Z_residual = \n" << z_residual << endl;
+
+    while (z_residual(1) > pi) z_residual(1)-= 2. * pi;
+    while (z_residual(1) < -pi) z_residual(1)+= 2. * pi;
+
+    cout << "Z_residual = \n" << z_residual << endl;
+
+    *x_out = x_state + KG * z_residual;
     *P_out = P_state - KG * S_meas * KG.transpose();
 
 }

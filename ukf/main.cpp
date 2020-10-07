@@ -147,8 +147,7 @@ int main() {
 		0.2187,   // phi in rad
 		2.0062;   // rho_dot in m/s
 
-	ukf.UpdateState(x_pred, P_pred, measurement, z_meas, S, T,& x_updated, &P_updated);
-
+	ukf.UpdateState(x_pred, P_pred, measurement, z_meas, S, T,&x_updated, &P_updated);
 	cout << "Updated state = \n" << x_updated << endl;
 	cout << "Updated covariance = \n" << P_updated << endl;
 

@@ -3,7 +3,7 @@
 #define UKF_H
 
 #include<Eigen/Dense>
-#define  pi 3.14159265358979323846
+constexpr auto pi = 3.141592653589793238462643383279502884197;
 class UKF {
 
     private:
