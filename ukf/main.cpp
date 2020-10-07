@@ -133,16 +133,24 @@ int main() {
 
 	MatrixXd T(5, 3);
 
-	cout << "pred_sig=" << Pred_Sig << endl;
-	cout << "x_pred = " << x_pred << endl;
-	cout << "sig_meas =" << sig_meas << endl;
-	cout << "z_meas = " << z_meas << endl;
-
 
 	ukf.CrossCorrelationT(Pred_Sig, x_pred, z_meas,sig_meas,&T);
 
 	cout << "Cross correlation Matrix T = \n" << T << endl;
 
+	VectorXd measurement(3);
+	VectorXd x_updated(5);
+	MatrixXd P_updated(5, 5);
+
+	measurement<<
+		5.9214,   // rho in m
+		0.2187,   // phi in rad
+		2.0062;   // rho_dot in m/s
+
+	ukf.UpdateState(x_pred, P_pred, measurement, z_meas, S, T,& x_updated, &P_updated);
+
+	cout << "Updated state = \n" << x_updated << endl;
+	cout << "Updated covariance = \n" << P_updated << endl;
 
 	return 0;
 }

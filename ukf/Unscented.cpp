@@ -337,12 +337,20 @@ void UKF::CrossCorrelationT(const Eigen::MatrixXd& sig_state, const Eigen::Vecto
     *T = TT;
 }
 
-/*
-void UpdateState(const Eigen::VectorXd& x_state, const Eigen::MatrixXd& sig_state, const Eigen::MatrixXd& P_state,const Eigen::VectorXd & measurement,const Eigen::VectorXd& x_meas, const Eigen::MatrixXd& sig_meas, const Eigen::MatrixXd& S_meas,Eigen::VectorXd* x_out, Eigen::MatrixXd* P_out) {
+void UKF::UpdateState(const Eigen::VectorXd& x_state, const Eigen::MatrixXd& P_state, const Eigen::VectorXd& measurement, const Eigen::VectorXd& x_meas,
+    const Eigen::MatrixXd& S_meas, const Eigen::MatrixXd& T, Eigen::VectorXd* x_out, Eigen::MatrixXd* P_out) {
 
 
+   /*---------------------------------------------------------
+                            Kalman Gain :   
+   -----------------------------------------------------------*/
+    MatrixXd KG(this->n_x, this->n_z);
+    KG = T * S_meas.inverse();
 
-
+    /*---------------------------------------------------------
+                            State Update:
+    ----------------------------------------------------------*/
+    *x_out = x_state + KG * (measurement - x_meas);
+    *P_out = P_state - KG * S_meas * KG.transpose();
 
 }
-*/
