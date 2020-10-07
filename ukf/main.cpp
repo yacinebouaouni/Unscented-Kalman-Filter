@@ -61,7 +61,7 @@ int main() {
 
 	ukf.AugmentedSigmaPoints(x, P, noise, Q,&Xsig);
 	// print result
-	std::cout << "Xsig = " << std::endl << Xsig << std::endl;
+	//std::cout << "Xsig = " << std::endl << Xsig << std::endl;
 
 	/*
 		5.7441  5.85768   5.7441   5.7441   5.7441   5.7441   5.7441   5.7441  5.63052   5.7441   5.7441   5.7441   5.7441   5.7441   5.7441
@@ -79,7 +79,7 @@ int main() {
 	MatrixXd Pred_Sig= MatrixXd(5, 15);
 	ukf.SigmaPointPrediction(Xsig,&Pred_Sig);
 
-	cout << "The predictions are : \n" << Pred_Sig <<endl;
+	//cout << "The predictions are : \n" << Pred_Sig <<endl;
 
 	/*
 		5.93553   6.0625  5.92217   5.9415  5.92361  5.93516  5.93705  5.93553  5.80833  5.94481  5.92935  5.94553  5.93589  5.93401  5.93553
@@ -90,12 +90,12 @@ int main() {
 	
 	*/
 
-	VectorXd x_pred(5, 1);
+	VectorXd x_pred(5);
 	MatrixXd P_pred(5, 5);
 	ukf.PredictMeanAndCovariance(Pred_Sig, &x_pred, &P_pred);
 
-	cout << "The mean of Sig points = \n" << x_pred << endl;
-	cout << "The covariance matrix = \n" << P_pred << endl;
+	//cout << "The mean of Sig points = \n" << x_pred << endl;
+	//cout << "The covariance matrix = \n" << P_pred << endl;
 
 	/*
 		The mean of Sig points =
@@ -114,10 +114,11 @@ int main() {
 
 	VectorXd z_meas(3);
 	MatrixXd S(3, 3);
-	ukf.PredictRadarMeasurement(Pred_Sig, &z_meas, &S);
+	MatrixXd sig_meas(3,15);
+	ukf.PredictRadarMeasurement(Pred_Sig, &z_meas, &S,&sig_meas);
 	
-	cout << "The mean z = \n " << z_meas << std::endl;
-	cout << "The covairance matrix S = \n" << S << std::endl;
+	//cout << "The mean z = \n " << z_meas << std::endl;
+	//cout << "The covairance matrix S = \n" << S << std::endl;
 
 	/*
 		The mean z =
@@ -129,5 +130,19 @@ int main() {
 		- 0.000145123  0.000624209 - 0.000781362
 		0.00408742 - 0.000781362    0.0180473
 	*/
+
+	MatrixXd T(5, 3);
+
+	cout << "pred_sig=" << Pred_Sig << endl;
+	cout << "x_pred = " << x_pred << endl;
+	cout << "sig_meas =" << sig_meas << endl;
+	cout << "z_meas = " << z_meas << endl;
+
+
+	ukf.CrossCorrelationT(Pred_Sig, x_pred, z_meas,sig_meas,&T);
+
+	cout << "Cross correlation Matrix T = \n" << T << endl;
+
+
 	return 0;
 }

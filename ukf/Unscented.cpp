@@ -215,7 +215,7 @@ void UKF::PredictMeanAndCovariance(const Eigen::MatrixXd& Preds_Sig, Eigen::Vect
 }
 
 
-void UKF::PredictRadarMeasurement(const Eigen::MatrixXd& sig_pts, Eigen::VectorXd* z_out, Eigen::MatrixXd* S_out) {
+void UKF::PredictRadarMeasurement(const Eigen::MatrixXd& sig_pts, Eigen::VectorXd* z_out, Eigen::MatrixXd* S_out,Eigen::MatrixXd* sig_meas) {
 
 
     //Prepare the weights:
@@ -300,5 +300,49 @@ void UKF::PredictRadarMeasurement(const Eigen::MatrixXd& sig_pts, Eigen::VectorX
 
     *S_out = S;
     *z_out = z_meas;
+    *sig_meas = Sig_meas;
+
 
 }
+
+void UKF::CrossCorrelationT(const Eigen::MatrixXd& sig_state, const Eigen::VectorXd& x_state, const Eigen::VectorXd& x_meas, const Eigen::MatrixXd& sig_meas, Eigen::MatrixXd* T) {
+
+    //Prepare the weights:
+
+    double weight1 = this->lambda / (this->lambda + this->n_a);
+    double weight2 = 1 / (2 * (this->lambda + this->n_a));
+
+    double weight;
+    MatrixXd TT = MatrixXd::Zero(this->n_x, this->n_z);
+    for (int i = 0; i < 2 * this->n_a + 1; i++) {
+
+        if (i == 0)weight = weight1;
+        else weight = weight2;
+
+        VectorXd state_residual = sig_state.col(i) - x_state;
+        // angle normalization
+        while (state_residual(3) > pi) state_residual(3) -= 2 * pi;
+        while (state_residual(3) < pi) state_residual(3) += 2 * pi;
+
+        VectorXd meas_residual = sig_meas.col(i) - x_meas;
+        // angle normalization
+        while (meas_residual(1) > pi) meas_residual(1) -= 2 * pi;
+        while (meas_residual(1) < pi) meas_residual(1) += 2 * pi;
+        
+        TT += weight * state_residual * meas_residual.transpose();
+
+
+    }
+
+    *T = TT;
+}
+
+/*
+void UpdateState(const Eigen::VectorXd& x_state, const Eigen::MatrixXd& sig_state, const Eigen::MatrixXd& P_state,const Eigen::VectorXd & measurement,const Eigen::VectorXd& x_meas, const Eigen::MatrixXd& sig_meas, const Eigen::MatrixXd& S_meas,Eigen::VectorXd* x_out, Eigen::MatrixXd* P_out) {
+
+
+
+
+
+}
+*/

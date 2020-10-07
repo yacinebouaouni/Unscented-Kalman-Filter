@@ -24,13 +24,13 @@ class UKF {
 
     public:
 
-        /**
-         * Constructor
+        /*
+          Constructor
          */
         UKF();
 
-        /**
-         * Destructor
+        /*
+          Destructor
          */
         virtual ~UKF();
 
@@ -46,9 +46,11 @@ class UKF {
         
         void PredictMeanAndCovariance(const Eigen::MatrixXd& Preds_Sig,Eigen::VectorXd* x_pred,Eigen::MatrixXd* P_pred);
 
-        void PredictRadarMeasurement(const Eigen::MatrixXd& Sig_pts,Eigen::VectorXd* z_out,Eigen::MatrixXd* S_out);
-        void UpdateState(Eigen::VectorXd* x_out,
-            Eigen::MatrixXd* P_out);
+        void PredictRadarMeasurement(const Eigen::MatrixXd& Sig_pts,Eigen::VectorXd* z_out,Eigen::MatrixXd* S_out, Eigen::MatrixXd* sig_meas);
+
+        void CrossCorrelationT(const Eigen::MatrixXd& sig_state, const Eigen::VectorXd& x_state, const Eigen::VectorXd& x_meas, const Eigen::MatrixXd& sig_meas,Eigen::MatrixXd* T);
+       // void UpdateState(const Eigen::VectorXd& x_state, const Eigen::MatrixXd& sig_state, const Eigen::MatrixXd& P_state, const Eigen::VectorXd& measurement, const Eigen::VectorXd& x_meas, const Eigen::MatrixXd& sig_meas,
+          //  const Eigen::MatrixXd& S_meas, Eigen::VectorXd* x_out, Eigen::MatrixXd* P_out);
 };
 
 #endif  // UKF_H
